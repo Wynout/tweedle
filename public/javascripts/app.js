@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('tweetStreamApp', []);
+    angular.module('tweetStreamApp', ['ngMaterial']);
 })();

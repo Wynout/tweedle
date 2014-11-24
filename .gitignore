@@ -31,3 +31,4 @@ node_modules
 # Custom configuration file
 config.json
 .idea
+public/lib

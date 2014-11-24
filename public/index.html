@@ -2,38 +2,59 @@
 <html ng-app="tweetStreamApp">
 <head lang="en">
     <meta charset="UTF-8">
-    <link href="stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
-    <link href="stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <link rel="stylesheet" href="lib/angular-material/angular-material.css">
+    <link rel="stylesheet" href="lib/angular-material/themes/indigo-theme.css"/>
     <!--[if IE]>
     <link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
 
-    <script src="lib/jquery/dist/jquery.min.js"></script>
-    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="stylesheets/style.css"/>
+
     <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-aria/angular-aria.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/hammerjs/hammer.js"></script>
+    <script src="lib/angular-material/angular-material.js"></script>
+
     <script src="lib/socket.io-client/socket.io.js"></script>
     <script src="javascripts/app.js"></script>
     <script src="javascripts/socket.js"></script>
     <script src="javascripts/tweet-list.js"></script>
     <title>Prototype Test</title>
 </head>
-<body ng-controller="TweetList as vm">
+<body>
 
+    <div ng-controller="TweetList as vm">
 
-    <div class="container">
-        <h1>Tweets: {{vm.count}}</h1>
-        <ul class="list-group">
-            <li class="list-group-item" ng-repeat="tweet in vm.tweets track by $index">
-                <!--<div class="well well-sm">-->
-                    {{tweet.timestamp_ms | date:'medium'}}
-                    <img src="{{tweet.user.profile_image_url_https}}" alt=""/>
+        <md-toolbar md-theme="">
+            <div class="md-toolbar-tools">
+                <h1>Total Tweets Received: {{vm.count}}</h1>
+            </div>
+        </md-toolbar>
 
-                    {{tweet.text}}
-                <!--</div>-->
-            </li>
-        </ul>
+        <md-content md-theme="indigo">
+
+            <md-list>
+                <md-item ng-repeat="tweet in vm.tweets track by $index">
+
+                    <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">
+
+                        <div class="md-tile-left">
+                            <img ng-src="{{tweet.user.profile_image_url_https}}" alt="" class="profile__image"/>
+                        </div>
+                        <div class="md-tile-content">
+                            <div class="row tweet__timestamp">{{tweet.timestamp_ms | date:'medium'}}</div>
+                            {{tweet.text}}
+                        </div>
+                    </md-whiteframe>
+
+                </md-item>
+            </md-list>
+        </md-content>
+
     </div>
-
 
 </body>
 </html>

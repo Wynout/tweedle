@@ -1,0 +1,24 @@
+body {
+    background-color: #61CEFF;
+}
+
+.profile__image {
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    width: 50px;
+    margin: 16px;
+}
+
+.md-whiteframe-z1 {
+    background-color: #f7f7f7;
+    margin: 20px;
+}
+
+md-content.md-indigo-theme {
+    background-color: #61CEFF;
+}
+
+.tweet__timestamp {
+    font-size: 0.8em;
+    color: #999;
+}
