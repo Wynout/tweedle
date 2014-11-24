@@ -1,0 +1,21 @@
+{
+  "name": "twitter-stream-test",
+  "version": "0.0.0",
+  "authors": [
+    "Wynout van der Veer <wynout@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.3",
+    "socket.io-client": "~1.2.0"
+  }
+}

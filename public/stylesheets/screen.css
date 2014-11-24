@@ -1,0 +1,323 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+@import url("//fonts.googleapis.com/css?family=Lato:300,400,700");
+/* line 11, ../sass/_superhero.bootswatch.scss */
+.navbar {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: none;
+  font-size: 122px;
+}
+/* line 18, ../sass/_superhero.bootswatch.scss */
+.navbar-default .badge {
+  background-color: #fff;
+  color: #4E5D6C;
+}
+/* line 26, ../sass/_superhero.bootswatch.scss */
+.navbar-inverse .badge {
+  background-color: #fff;
+  color: #DF691A;
+}
+
+/* line 35, ../sass/_superhero.bootswatch.scss */
+.btn {
+  font-weight: 300;
+}
+/* line 40, ../sass/_superhero.bootswatch.scss */
+.btn-default:hover {
+  background-color: #485563;
+}
+/* line 45, ../sass/_superhero.bootswatch.scss */
+.btn-sm, .btn-xs {
+  font-size: 12px;
+}
+
+/* line 53, ../sass/_superhero.bootswatch.scss */
+body {
+  font-weight: 300;
+}
+
+/* line 57, ../sass/_superhero.bootswatch.scss */
+.text-primary,
+.text-primary:hover {
+  color: #DF691A;
+}
+
+/* line 62, ../sass/_superhero.bootswatch.scss */
+.text-success,
+.text-success:hover {
+  color: #5cb85c;
+}
+
+/* line 67, ../sass/_superhero.bootswatch.scss */
+.text-danger,
+.text-danger:hover {
+  color: #d9534f;
+}
+
+/* line 72, ../sass/_superhero.bootswatch.scss */
+.text-warning,
+.text-warning:hover {
+  color: #f0ad4e;
+}
+
+/* line 77, ../sass/_superhero.bootswatch.scss */
+.text-info,
+.text-info:hover {
+  color: #5bc0de;
+}
+
+/* line 82, ../sass/_superhero.bootswatch.scss */
+.page-header {
+  border-bottom-color: #4E5D6C;
+}
+
+/* line 86, ../sass/_superhero.bootswatch.scss */
+.dropdown-menu {
+  border: none;
+  margin: 0;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+/* line 92, ../sass/_superhero.bootswatch.scss */
+.dropdown-menu > li > a {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+/* line 98, ../sass/_superhero.bootswatch.scss */
+.btn-group.open .dropdown-toggle {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+/* line 102, ../sass/_superhero.bootswatch.scss */
+.dropdown-header {
+  font-size: 12px;
+}
+
+/* line 108, ../sass/_superhero.bootswatch.scss */
+table,
+.table {
+  font-size: 12px;
+}
+/* line 112, ../sass/_superhero.bootswatch.scss */
+table a:not(.btn),
+.table a:not(.btn) {
+  color: #fff;
+  text-decoration: underline;
+}
+/* line 117, ../sass/_superhero.bootswatch.scss */
+table .dropdown-menu a,
+.table .dropdown-menu a {
+  text-decoration: none;
+}
+/* line 121, ../sass/_superhero.bootswatch.scss */
+table .text-muted,
+.table .text-muted {
+  color: #4E5D6C;
+}
+/* line 125, ../sass/_superhero.bootswatch.scss */
+table > thead > tr > th,
+table > tbody > tr > th,
+table > tfoot > tr > th,
+table > thead > tr > td,
+table > tbody > tr > td,
+table > tfoot > tr > td,
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  border-color: transparent;
+}
+
+/* line 137, ../sass/_superhero.bootswatch.scss */
+input,
+textarea {
+  color: #2B3E50;
+}
+
+/* line 142, ../sass/_superhero.bootswatch.scss */
+label,
+.radio label,
+.checkbox label,
+.help-block {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+/* line 150, ../sass/_superhero.bootswatch.scss */
+.input-addon,
+.input-group-addon {
+  color: #EBEBEB;
+}
+
+/* line 156, ../sass/_superhero.bootswatch.scss */
+.has-warning .help-block,
+.has-warning .control-label,
+.has-warning .form-control-feedback {
+  color: #f0ad4e;
+}
+/* line 162, ../sass/_superhero.bootswatch.scss */
+.has-warning .input-group-addon {
+  border: none;
+}
+
+/* line 168, ../sass/_superhero.bootswatch.scss */
+.has-error .help-block,
+.has-error .control-label,
+.has-error .form-control-feedback {
+  color: #d9534f;
+}
+/* line 174, ../sass/_superhero.bootswatch.scss */
+.has-error .input-group-addon {
+  border: none;
+}
+
+/* line 180, ../sass/_superhero.bootswatch.scss */
+.has-success .help-block,
+.has-success .control-label,
+.has-success .form-control-feedback {
+  color: #5cb85c;
+}
+/* line 186, ../sass/_superhero.bootswatch.scss */
+.has-success .input-group-addon {
+  border: none;
+}
+
+/* line 191, ../sass/_superhero.bootswatch.scss */
+.form-control:focus {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+/* line 198, ../sass/_superhero.bootswatch.scss */
+.has-warning .form-control:focus,
+.has-error .form-control:focus,
+.has-success .form-control:focus {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+/* line 206, ../sass/_superhero.bootswatch.scss */
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+  border-color: transparent;
+}
+
+/* line 214, ../sass/_superhero.bootswatch.scss */
+.nav-tabs > li > a {
+  color: #EBEBEB;
+}
+
+/* line 220, ../sass/_superhero.bootswatch.scss */
+.nav-pills > li > a {
+  color: #EBEBEB;
+}
+
+/* line 226, ../sass/_superhero.bootswatch.scss */
+.pager a {
+  color: #EBEBEB;
+}
+
+/* line 233, ../sass/_superhero.bootswatch.scss */
+.label {
+  font-weight: 300;
+}
+
+/* line 237, ../sass/_superhero.bootswatch.scss */
+.alert {
+  color: #fff;
+}
+/* line 240, ../sass/_superhero.bootswatch.scss */
+.alert a,
+.alert .alert-link {
+  color: #fff;
+}
+
+/* line 246, ../sass/_superhero.bootswatch.scss */
+.close {
+  opacity: 0.4;
+}
+/* line 249, ../sass/_superhero.bootswatch.scss */
+.close:hover, .close:focus {
+  opacity: 1;
+}
+
+/* line 259, ../sass/_superhero.bootswatch.scss */
+.well {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+/* line 265, ../sass/_superhero.bootswatch.scss */
+a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+  border: none;
+}
+/* line 272, ../sass/_superhero.bootswatch.scss */
+a.list-group-item-success.active {
+  background-color: #5cb85c;
+}
+/* line 276, ../sass/_superhero.bootswatch.scss */
+a.list-group-item-success.active:hover, a.list-group-item-success.active:focus {
+  background-color: #4cae4c;
+}
+/* line 283, ../sass/_superhero.bootswatch.scss */
+a.list-group-item-warning.active {
+  background-color: #f0ad4e;
+}
+/* line 287, ../sass/_superhero.bootswatch.scss */
+a.list-group-item-warning.active:hover, a.list-group-item-warning.active:focus {
+  background-color: #eea236;
+}
+/* line 294, ../sass/_superhero.bootswatch.scss */
+a.list-group-item-danger.active {
+  background-color: #d9534f;
+}
+/* line 298, ../sass/_superhero.bootswatch.scss */
+a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
+  background-color: #d43f3a;
+}
+
+/* line 305, ../sass/_superhero.bootswatch.scss */
+.panel {
+  border: none;
+}
+/* line 308, ../sass/_superhero.bootswatch.scss */
+.panel-default > .panel-heading {
+  background-color: #485563;
+  color: #EBEBEB;
+}
+
+/* line 314, ../sass/_superhero.bootswatch.scss */
+.thumbnail {
+  background-color: #4E5D6C;
+  border: none;
+}
+
+/* line 319, ../sass/_superhero.bootswatch.scss */
+.modal {
+  padding: 0;
+}
+/* line 322, ../sass/_superhero.bootswatch.scss */
+.modal-header, .modal-footer {
+  background-color: #485563;
+  border: none;
+  border-radius: 0;
+}
+
+/* line 331, ../sass/_superhero.bootswatch.scss */
+.popover-title {
+  border: none;
+}

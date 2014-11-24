@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="tweetStreamApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link href="stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <link href="stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+    <!--[if IE]>
+    <link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <![endif]-->
+
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/socket.io-client/socket.io.js"></script>
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/socket.js"></script>
+    <script src="javascripts/tweet-list.js"></script>
+    <title>Prototype Test</title>
+</head>
+<body ng-controller="TweetList as vm">
+
+
+    <div class="container">
+        <h1>Tweets: {{vm.count}}</h1>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="tweet in vm.tweets track by $index">
+                <!--<div class="well well-sm">-->
+                    {{tweet.timestamp_ms | date:'medium'}}
+                    <img src="{{tweet.user.profile_image_url_https}}" alt=""/>
+
+                    {{tweet.text}}
+                <!--</div>-->
+            </li>
+        </ul>
+    </div>
+
+
+</body>
+</html>
