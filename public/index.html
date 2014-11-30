@@ -11,7 +11,6 @@
     <![endif]-->
 
     <link rel="stylesheet" href="stylesheets/style.css"/>
-    <link rel="stylesheet" href="stylesheets/bottom-sheet.css"/>
 
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-aria/angular-aria.js"></script>
@@ -25,7 +24,6 @@
     <script src="javascripts/config.js"></script>
     <script src="javascripts/socket.js"></script>
     <script src="javascripts/live-tweet-list.js"></script>
-    <script src="javascripts/bottom-sheet.js"></script>
     <script src="javascripts/unsafe.filter.js"></script>
     <title>Prototype Test</title>
 </head>
@@ -64,31 +62,6 @@
         </md-content>
 
     </div>
-
-
-
-
-    <div ng-controller="BottomSheetExample" class="bottomSheetdemoBasicUsage">
-        <p style="padding-left: 20px;">
-            Bottom sheet can be dismissed with the service or a swipe down.
-        </p>
-        <div class="bottom-sheet-demo inset" layout="column" layout-phone="row" layout-align="center">
-            <md-button class="md-primary" ng-click="showListBottomSheet($event)">
-                Show as List
-            </md-button>
-            <div style="width:50px;"></div>
-            <md-button class="md-primary" ng-click="showGridBottomSheet($event)">
-                Show as Grid
-            </md-button>
-        </div>
-
-        <br/>
-        <b layout="row" layout-align="center center" layout-padding>
-            {{alert}}
-        </b>
-    </div>
-
-
 
 </body>
 </html>
