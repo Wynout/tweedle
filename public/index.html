@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-    <link rel="stylesheet" href="lib/angular-material/angular-material.css">
-    <link rel="stylesheet" href="lib/angular-material/themes/indigo-theme.css"/>
     <!--[if IE]>
     <link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
 
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.css"/>
+
     <link rel="stylesheet" href="stylesheets/style.css"/>
 
     <script src="lib/angular/angular.js"></script>
-    <script src="lib/angular-aria/angular-aria.js"></script>
-    <script src="lib/angular-animate/angular-animate.js"></script>
-    <script src="lib/hammerjs/hammer.js"></script>
-    <script src="lib/angular-material/angular-material.js"></script>
     <script src="lib/angular-sanitize/angular-sanitize.js"></script>
 
     <script src="lib/socket.io-client/socket.io.js"></script>
@@ -29,39 +26,21 @@
 </head>
 <body>
 
+<div class="container">
     <div ng-controller="LiveTweetList as vm">
+        <h1>Total Tweets Received: {{vm.count}}</h1>
 
-        <md-toolbar md-theme="">
-            <div class="md-toolbar-tools">
-                <h1>Total Tweets Received: {{vm.count}}</h1>
+        <div ng-repeat="tweet in vm.tweets track by $index" class="well well-sm">
+            <div ng-if="settings.profilePicturesEnabled">
+                <img ng-src="{{tweet.user.profile_image_url_https}}" alt="" class="profile__image"/>
             </div>
-        </md-toolbar>
-
-        <md-switch ng-model="settings.profilePicturesEnabled" aria-label="Enable profile pictures">
-            Enable profile pictures: {{ settings.profilePicturesEnabled }}
-        </md-switch>
-
-        <md-content md-theme="indigo">
-
-            <md-list>
-                <md-item ng-repeat="tweet in vm.tweets track by $index">
-
-                    <md-whiteframe class="md-whiteframe-z1" layout layout-align="center top">
-
-                        <div class="md-tile-left" ng-if="settings.profilePicturesEnabled">
-                            <img ng-src="{{tweet.user.profile_image_url_https}}" alt="" class="profile__image"/>
-                        </div>
-                        <div class="md-tile-content">
-                            <div class="row tweet__timestamp">{{tweet.timestamp_ms | date:'medium'}}</div>
-                            <div ng-bind-html="tweet.text | linky | unsafe"></div>
-                        </div>
-                    </md-whiteframe>
-
-                </md-item>
-            </md-list>
-        </md-content>
-
+            <div>
+                <div class="tweet__timestamp">{{tweet.timestamp_ms | date:'medium'}}</div>
+                <div ng-bind-html="tweet.text | linky | unsafe"></div>
+            </div>
+        </div>
     </div>
+</div>
 
 </body>
 </html>

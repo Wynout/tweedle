@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('tweetStreamApp', ['ngMaterial', 'ngSanitize']);
+    angular.module('tweetStreamApp', ['ngSanitize']);
 })();

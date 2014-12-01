@@ -13,9 +13,9 @@
     angular.module('tweetStreamApp')
         .factory(serviceId, socket);
 
-    socket.$inject = ['$rootScope', '$mdToast', 'config'];
+    socket.$inject = ['$rootScope', 'config'];
 
-    function socket($rootScope, $mdToast, config) {
+    function socket($rootScope, config) {
 
         var socket = io.connect(config.tweetStreamUrl);
         var service = {
@@ -56,6 +56,7 @@
 
         function activate() {
 
+            /*
             socket.on('connecting', function () {
 
                 $mdToast.show({
@@ -108,7 +109,7 @@
                     hideDelay: config.toast.hideDelay,
                     position : config.toast.position
                 });
-            });
+            });*/
         }
     }
 })();

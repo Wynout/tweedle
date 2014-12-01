@@ -16,6 +16,9 @@
         vm.tweets = [];
         vm.count  = 0;
         vm.title  = 'Live Tweet Stream List';
+        vm.settings = {
+            profilePicturesEnabled: false
+        };
 
         activate();
         ///////////
