@@ -8,8 +8,12 @@
     <link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <![endif]-->
 
+    <!--Bootstrap-->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.css"/>
+
+    <!--Chartist-->
+    <link rel="stylesheet" href="lib/chartist/dist/chartist.min.css"/>
 
     <link rel="stylesheet" href="stylesheets/style.css"/>
 
@@ -22,11 +26,57 @@
     <script src="javascripts/socket.js"></script>
     <script src="javascripts/live-tweet-list.js"></script>
     <script src="javascripts/unsafe.filter.js"></script>
+    <script src="lib/chartist/dist/chartist.js"></script>
     <title>Prototype Test</title>
 </head>
 <body>
 
 <div class="container">
+
+    <div class="ct-chart">
+        <script>
+            /**
+             * Alternative!!
+             * http://www.benh.co.uk/datasift/visualising-a-datasift-feed-with-node-and-d3/
+             * @type {{labels: string[], series: *[]}}
+             */
+
+            var data = {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                series: [
+                    [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
+                    [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
+                ]
+            };
+
+            var options = {
+                height: 400,
+                seriesBarDistance: 15
+            };
+
+            var responsiveOptions = [
+                ['screen and (min-width: 641px) and (max-width: 1024px)', {
+                    seriesBarDistance: 10,
+                    axisX: {
+                        labelInterpolationFnc: function (value) {
+                            return value;
+                        }
+                    }
+                }],
+                ['screen and (max-width: 640px)', {
+                    seriesBarDistance: 5,
+                    axisX: {
+                        labelInterpolationFnc: function (value) {
+                            return value[0];
+                        }
+                    }
+                }]
+            ];
+
+            new Chartist.Bar('.ct-chart', data, options, responsiveOptions);
+        </script>
+    </div>
+
     <div ng-controller="LiveTweetList as vm">
         <h1>Total Tweets Received: {{vm.count}}</h1>
 
@@ -40,6 +90,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 
 </body>
