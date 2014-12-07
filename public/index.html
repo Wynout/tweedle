@@ -2,21 +2,25 @@
 <html ng-app="tweetStreamApp">
 <head lang="en">
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
 
     <!--[if IE]>
-    <link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css"/>
     <![endif]-->
 
     <!--Bootstrap-->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.css"/>
 
+    <!--D3 Bar Chart-->
+    <link rel="stylesheet" href="stylesheets/bar-chart.css"/>
+
     <!--Global override-->
     <link rel="stylesheet" href="stylesheets/style.css"/>
 
     <script src="lib/socket.io-client/socket.io.js"></script>
     <script src="lib/d3/d3.js"></script>
+    <script src="lib/moment/moment.js"></script>
 
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-sanitize/angular-sanitize.js"></script>
@@ -26,11 +30,52 @@
     <script src="javascripts/socket.js"></script>
     <script src="javascripts/live-tweet-list.js"></script>
     <script src="javascripts/unsafe.filter.js"></script>
+
+    <script src="javascripts/d3-bar-chart.module.js"></script>
+    <script src="javascripts/bar-chart.directive.js"></script>
+    <script src="javascripts/bar-chart-form.directive.js"></script>
     <title>Prototype Test</title>
 </head>
 <body>
 
 <div class="container">
+
+    <div ng-controller="TweetActivity">
+        <bar-chart-form></bar-chart-form>
+        <bar-chart width="options.width" height="options.height" data="data" hovered="hovered(args)"></bar-chart>
+    </div>
+
+
+    <script>
+        angular.module('tweetStreamApp')
+            .controller('TweetActivity', function ($scope) {
+
+                $scope.options = {width: 800, height: 350, 'bar': 'aaa'};
+                $scope.data = [
+                    {timestamp: 1417879285622, value: 1},
+                    {timestamp: 1417879286622, value: 2},
+                    {timestamp: 1417879287621, value: 3},
+                    {timestamp: 1417879288623, value: 4},
+                    {timestamp: 1417879289625, value: 5}
+                ];
+
+                $scope.hovered = function (d) {
+
+                    $scope.barValue = d;
+                    $scope.$apply();
+                };
+                $scope.barValue = 'None';
+
+                setInterval(function () {
+
+                    var newlist = $scope.data.slice(1);
+                    newlist.push({timestamp: moment().utc().valueOf(), value: Math.random()*10});
+                    $scope.data = newlist;
+                    $scope.$apply();
+                }, 1000);
+            });
+    </script>
+
 
     <div ng-controller="LiveTweetList as vm">
         <h1>Total Tweets Received: {{vm.count}}</h1>

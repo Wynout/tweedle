@@ -1,0 +1,15 @@
+.chart--linear .axis path,
+.chart--linear .axis line{
+    fill: none;
+    stroke:black;
+    shape-rendering:crispEdge;
+}
+
+.chart--linear .axis text{
+    font-family: sans-serif;
+    font-size: 10px;
+}
+
+.chart--linear .tick {
+    stroke-dasharray: 1, 2;
+}
