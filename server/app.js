@@ -1,4 +1,4 @@
-var config      = require('./config.json'),
+var config      = require('./../config.json'),
     app         = require('express')(),
     server      = require('http').createServer(app),
     io          = require('socket.io')(server),
@@ -9,7 +9,7 @@ var config      = require('./config.json'),
 /**
  * Setup Express
  */
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/client'));
 app.get('/', function (req, res) {
 
     res.redirect('/index.html')
