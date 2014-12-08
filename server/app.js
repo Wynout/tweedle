@@ -9,12 +9,11 @@ var compress    = require('compression'),
     http        = require('http'),
     server      = http.createServer(app),
     io          = require('socket.io')(server),
+    tweetStream = require('./tweet-stream')(io),
     logger      = require('morgan'),
-    port        = process.env['PORT'] || 3000,
-    TweetStream = require('node-tweet-stream'),
-    twitter     = new TweetStream(config.twitter_api);
+    port        = process.env['PORT'] || 3000;
 
-var appDir      =  __dirname + '/../client/'; // Our NG code is served from client directory
+var appDir      =  __dirname + '/../client/'; // Our code is served from client directory
 var environment = process.env.NODE_ENV;
 var pkg         = './../package.json';
 
@@ -37,30 +36,6 @@ console.log('NODE_ENV=' + environment);
 app.get('/', function (req, res) {
 
     res.redirect('/index.html')
-});
-
-
-/**
- * Setup Twitter Stream
- */
-twitter.on('tweet', function (tweet) {
-
-    io.emit('tweet', tweet);
-    console.log(tweet.text)
-});
-twitter.track('hong kong');
-
-
-/**
- * Setup Socket Events
- */
-io.on('connection', function (socket) {
-
-    console.log('Client connected:', socket.handshake.address, socket.handshake.time);
-});
-io.on('error', function (error) {
-
-    console.log('Twitter error:', error);
 });
 
 
