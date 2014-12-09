@@ -13,7 +13,7 @@
     function barChart($window) {
 
         var chart = $window.d3.custom.barChart();
-        var directiveDefinitionObject = {
+        var directive = {
             restrict: 'E',
             replace : true,
             template: '<div class="chart"></div>',
@@ -23,31 +23,51 @@
                 data   : '=data',
                 hovered: '&hovered'
             },
-            link: function (scope, element, attributes) {
-
-                var chartElement = d3.select(element[0]);
-                chart.on('customHover', function (d, i) {
-
-                    scope.hovered({args:d});
-                });
-
-                scope.$watch('data', function (newVal, oldVal) {
-
-                    chartElement.datum(newVal).call(chart);
-                });
-
-                scope.$watch('width', function (newVal, oldVal){
-
-                    chartElement.call(chart.width(scope.width));
-                });
-
-                scope.$watch('height', function (newVal, oldVal){
-
-                    chartElement.call(chart.height(scope.height));
-                });
-            }
+            link        : linkFunction,
+            controller  : BarChartController,
+            controllerAs: 'vm'
         };
 
-        return directiveDefinitionObject;
+        return directive;
+        /////////////////
+
+
+        function linkFunction(scope, element, attributes) {
+
+            var chartElement = d3.select(element[0]);
+            chart.on('customHover', function (d, i) {
+
+                scope.hovered({args:d});
+            });
+
+            scope.$watch('data', function (newVal, oldVal) {
+
+                chartElement.datum(newVal).call(chart);
+            });
+
+            scope.$watch('width', function (newVal, oldVal){
+
+                chartElement.call(chart.width(scope.width));
+            });
+
+            scope.$watch('height', function (newVal, oldVal){
+
+                chartElement.call(chart.height(scope.height));
+            });
+        }
+    }
+
+
+    /**
+     * Note: The directive's controller is outside the directive's closure.
+     * Why?: This style eliminates issues where the injection gets created as unreachable code after a return.
+     */
+    BarChartController.$inject = ['$scope'];
+
+    function BarChartController($scope) {
+
+        // Injecting $scope just for comparison
+        /*jshint validthis: true*/
+        var vm = this;
     }
 })();

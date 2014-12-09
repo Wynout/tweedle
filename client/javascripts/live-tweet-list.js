@@ -10,7 +10,7 @@
 
     function LiveTweetList(socket) {
 
-        /*jshint validthis: true */
+        /*jshint validthis: true*/
         var vm = this;
 
         vm.tweets = [];

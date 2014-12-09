@@ -12,7 +12,7 @@
 
     function barChartForm() {
 
-        var directiveDefinitionObject = {
+        var directive = {
             restrict: 'E',
             replace: true,
             controller: function ($scope) {
@@ -25,15 +25,15 @@
             },
             template:
             '<div class="form">' +
-                'Height: {{options.height}}px<br />' +
-                '<input type="range" ng-model="options.height" min="100" max="800"/>' +
-                'Width: {{options.width}}px<br />' +
-                '<input type="range" ng-model="options.width" min="100" max="1200"/>' +
+                'Height: {{vm.options.height}}px<br />' +
+                '<input type="range" ng-model="vm.options.height" min="100" max="800"/>' +
+                'Width: {{vm.options.width}}px<br />' +
+                '<input type="range" ng-model="vm.options.width" min="100" max="1200"/>' +
                 '<br /><button ng-click="update()">Update Data</button>' +
-                '<br />Hovered bar data: {{barValue}}' +
+                '<br />Hovered bar data: {{vm.barValue}}' +
             '</div>'
         };
 
-        return directiveDefinitionObject;
+        return directive;
     }
 })();
