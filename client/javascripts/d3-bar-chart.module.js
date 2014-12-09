@@ -35,12 +35,8 @@
                     .domain([0, d3.max(_data, function(d, i){ return d.value; })])
                     .range([chart.height, 0]);
 
-
-
-
                 var xAxis = d3.svg.axis()
                     .scale(xScale)
-                    //.tickFormat(function (d) { return moment(d.timestamp).format('HH:mm:ss'); })
                     .orient('bottom');
 
                 var yAxis = d3.svg.axis()
