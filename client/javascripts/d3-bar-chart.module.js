@@ -25,6 +25,8 @@
                 chart.width  = canvas.width  - margin.left - margin.right;
                 chart.height = canvas.height - margin.top  - margin.bottom;
 
+                _data = convertTimestamp(_data);
+
                 var xScale = d3.scale.ordinal()
                     .domain(_data.map(function (d, i) { return d.timestamp; }))
                     .rangeRoundBands([0, chart.width], .1);
@@ -33,9 +35,12 @@
                     .domain([0, d3.max(_data, function(d, i){ return d.value; })])
                     .range([chart.height, 0]);
 
+
+
+
                 var xAxis = d3.svg.axis()
                     .scale(xScale)
-                    .tickFormat(function (d) { return moment(d.timestamp).format('HH:mm:ss'); })
+                    //.tickFormat(function (d) { return moment(d.timestamp).format('HH:mm:ss'); })
                     .orient('bottom');
 
                 var yAxis = d3.svg.axis()
@@ -137,4 +142,18 @@
         d3.rebind(exports, dispatch, 'on');
         return exports;
     };
+
+
+    function convertTimestamp(_data) {
+
+        _data.map(function (d) {
+
+            if (typeof d.timestamp !=='number') {
+                return d;
+            }
+            d.timestamp = moment(d.timestamp).format('HH:mm:ss');
+            return d;
+        });
+        return _data;
+    }
 })();

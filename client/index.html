@@ -49,30 +49,30 @@
     <script>
         angular.module('tweetStreamApp').controller('TweetActivity', function ($scope, socket) {
 
-                /*jshint validthis: true*/
-                var vm = this;
+            /*jshint validthis: true*/
+            var vm = this;
 
-                vm.data = [
-                    {timestamp: 1417879285622, value: 10},
-                    {timestamp: 1417879286622, value: 20},
-                    {timestamp: 1417879287621, value: 30},
-                    {timestamp: 1417879288623, value: 40},
-                    {timestamp: 1417879289625, value: 50}
-                ];
+            vm.data = [
+                {timestamp: 1417879285622, value: 10},
+                {timestamp: 1417879286622, value: 20},
+                {timestamp: 1417879287621, value: 30},
+                {timestamp: 1417879288623, value: 40},
+                {timestamp: 1417879289625, value: 50}
+            ];
 
-                vm.options = {width: 800, height: 350, 'bar': 'aaa'};
-                vm.hovered = function (d) {
+            vm.options = {width: 800, height: 350, 'bar': 'aaa'};
+            vm.hovered = function (d) {
 
-                    vm.barValue = d;
-                    $scope.$apply();
-                };
-                vm.barValue = 'None';
+                vm.barValue = d;
+                $scope.$apply();
+            };
+            vm.barValue = 'None';
 
-                socket.on('tweet-count-history', function (data) {
+            socket.on('tweet-count-history', function (data) {
 
-                    vm.data = data;
-                });
+                vm.data = data;
             });
+        });
     </script>
 
 
