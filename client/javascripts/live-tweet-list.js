@@ -21,6 +21,7 @@
         };
 
         activate();
+
         ///////////
 
         function activate() {

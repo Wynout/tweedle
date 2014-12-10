@@ -9,21 +9,26 @@
     d3.custom.barChart = function module() {
 
         var margin   = {top: 20, right: 20, bottom: 40, left: 40},
-            canvas   = {width: 500, height: 500},
-            chart    = {width: 500, height: 500},
+            canvas   = {width: 500, height: 300},
+            chart    = {
+                width : canvas.width  - margin.left - margin.right,
+                height: canvas.height - margin.top  - margin.bottom
+            },
             gap      = 0,
             ease     = 'cubic-in-out',
             duration = 500,
             svg;
 
         var dispatch = d3.dispatch('customHover');
+        d3.rebind(exports, dispatch, 'on');
+
+        return exports;
+
+        ///////////////
 
         function exports(_selection) {
 
             _selection.each(function (_data) {
-
-                chart.width  = canvas.width  - margin.left - margin.right;
-                chart.height = canvas.height - margin.top  - margin.bottom;
 
                 _data = convertTimestamp(_data);
 
@@ -47,14 +52,16 @@
                 if (!svg) {
                     svg = d3.select(this)
                         .append('svg')
-                        .classed('chart', true);
+                        .classed('chart', true)
+                        .attr('width', canvas.width)
+                        .attr('height', canvas.height)
+                        .call(responsivefy); // Enables responsive charting
+
                     var container = svg.append('g').classed('container-group', true);
                     container.append('g').classed('chart-group', true);
                     container.append('g').classed('x-axis-group axis', true);
                     container.append('g').classed('y-axis-group axis', true);
                 }
-                svg.transition()
-                    .duration(duration).attr({width: canvas.width, height: canvas.height});
                 svg.select('.container-group')
                     .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
 
@@ -109,34 +116,23 @@
 
                 duration = 500;
             });
+
+            // not used:
+            /*
+            this.gap = function (_x) {
+
+                if (!arguments.length) { return gap; }
+                gap = _x;
+                return this;
+            };
+            this.ease = function(_x) {
+
+                if (!arguments.length) { return ease; }
+                ease = _x;
+                return this;
+            };
+            */
         }
-        exports.width = function (_x) {
-
-            if (!arguments.length) { return canvas.width; }
-            canvas.width = parseInt(_x);
-            return this;
-        };
-        exports.height = function (_x) {
-
-            if (!arguments.length) { return canvas.height; }
-            canvas.height = parseInt(_x);
-            duration = 0;
-            return this;
-        };
-        exports.gap = function (_x) {
-
-            if (!arguments.length) { return gap; }
-            gap = _x;
-            return this;
-        };
-        exports.ease = function(_x) {
-
-            if (!arguments.length) { return ease; }
-            ease = _x;
-            return this;
-        };
-        d3.rebind(exports, dispatch, 'on');
-        return exports;
     };
 
 
@@ -151,5 +147,39 @@
             return d;
         });
         return _data;
+    }
+
+
+    /**
+     * Responsive D3 Charting
+     * @link http://www.brendansudol.com/posts/responsive-d3/
+     */
+    function responsivefy(svg) {
+
+        // get container + svg aspect ratio
+        var container = d3.select(svg.node().parentNode),
+            width     = parseInt(svg.style('width'), 10),
+            height    = parseInt(svg.style('height'), 10),
+            aspect    = width / height;
+
+        // add viewBox and preserveAspectRatio properties,
+        // and call resize so that svg resizes on inital page load
+        svg.attr('viewBox', '0 0 ' + width + ' ' + height)
+            .attr('preserveAspectRatio', 'xMinYMid')
+            .call(resize);
+
+        // to register multiple listeners for same event type,
+        // you need to add namespace, i.e., 'click.foo'
+        // necessary if you call invoke this function for multiple svgs
+        // api docs: https://github.com/mbostock/d3/wiki/Selections#on
+        d3.select(window).on('resize.' + container.attr('id'), resize);
+
+        // get width of container and resize svg to fit it
+        function resize() {
+
+            var targetWidth = parseInt(container.style('width'), 10);
+            svg.attr('width', targetWidth);
+            svg.attr('height', Math.round(targetWidth / aspect));
+        }
     }
 })();

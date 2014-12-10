@@ -33,16 +33,14 @@
 
     <script src="javascripts/d3-bar-chart.module.js"></script>
     <script src="javascripts/bar-chart.directive.js"></script>
-    <script src="javascripts/bar-chart-form.directive.js"></script>
     <title>Prototype Test</title>
 </head>
 <body>
 
 <div class="container">
 
-    <div ng-controller="TweetActivity as vm">
-        <bar-chart-form></bar-chart-form>
-        <bar-chart width="vm.options.width" height="vm.options.height" data="vm.data" hovered="vm.hovered(args)"></bar-chart>
+    <div ng-controller="TweetActivity as vm" class="col-md-offset-2 col-md-8" style="background-color: lightskyblue;">
+        <bar-chart data="vm.data" hovered="vm.hovered(args)"></bar-chart>
     </div>
 
 
@@ -60,7 +58,7 @@
                 {timestamp: 1417879289625, value: 50}
             ];
 
-            vm.options = {width: 800, height: 350, 'bar': 'aaa'};
+//            vm.options = {width: 300, height: 150, 'bar': 'aaa'};
             vm.hovered = function (d) {
 
                 vm.barValue = d;
@@ -76,7 +74,7 @@
     </script>
 
 
-    <div ng-controller="LiveTweetList as vm">
+    <div ng-controller="LiveTweetList as vm" class="col-md-offset-2 col-md-8">
         <h1>Total Tweets Received: {{vm.count}}</h1>
 
         <div ng-repeat="tweet in vm.tweets track by $index" class="well well-sm">

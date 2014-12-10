@@ -29,6 +29,7 @@
         };
 
         return directive;
+
         /////////////////
 
 
@@ -43,16 +44,6 @@
             scope.$watch('data', function (newVal, oldVal) {
 
                 chartElement.datum(newVal).call(chart);
-            });
-
-            scope.$watch('width', function (newVal, oldVal){
-
-                chartElement.call(chart.width(scope.width));
-            });
-
-            scope.$watch('height', function (newVal, oldVal){
-
-                chartElement.call(chart.height(scope.height));
             });
         }
     }
