@@ -8,15 +8,16 @@
 
     d3.custom.barChart = function module() {
 
-        var margin   = {top: 20, right: 20, bottom: 40, left: 40},
-            canvas   = {width: 500, height: 300},
+        var canvas     = {width: 500, height: 300},
+            margin     = {top: 20, right: 20, bottom: 40, left: 40},
             chart    = {
                 width : canvas.width  - margin.left - margin.right,
                 height: canvas.height - margin.top  - margin.bottom
             },
-            gap      = 0,
-            ease     = 'cubic-in-out',
-            duration = 500,
+            ease       = 'cubic-in-out',
+            duration   = 500,
+            gap        = 0,
+            timeFormat = 'mm[m]:ss[s]',
             svg;
 
         var dispatch = d3.dispatch('customHover');
@@ -30,7 +31,7 @@
 
             _selection.each(function (_data) {
 
-                _data = convertTimestamp(_data);
+                _data = formatTimestamp(_data, timeFormat);
 
                 var xScale = d3.scale.ordinal()
                     .domain(_data.map(function (d, i) { return d.timestamp; }))
@@ -136,14 +137,16 @@
     };
 
 
-    function convertTimestamp(_data) {
+    function formatTimestamp(_data, format) {
+
+        format = !!format ? format : 'HH:mm:ss';
 
         _data.map(function (d) {
 
             if (typeof d.timestamp !=='number') {
                 return d;
             }
-            d.timestamp = moment(d.timestamp).format('HH:mm:ss');
+            d.timestamp = moment(d.timestamp).format(format);
             return d;
         });
         return _data;
