@@ -1,5 +1,5 @@
 /**
- * @link http://bl.ocks.org/biovisualize/5372077
+ * @link https://strongriley.github.io/d3/tutorial/bar-2.html
  */
 (function () {
     'use strict';
@@ -8,17 +8,17 @@
 
     d3.custom.barChart = function module() {
 
-        var canvas     = {width: 500, height: 300},
-            margin     = {top: 20, right: 20, bottom: 40, left: 40},
-            chart    = {
+        var canvas = {width: 600, height: 200},
+            margin = {top: 20, right: 20, bottom: 40, left: 40},
+            chart  = {
                 width : canvas.width  - margin.left - margin.right,
                 height: canvas.height - margin.top  - margin.bottom
-            },
-            ease       = 'cubic-in-out',
-            duration   = 500,
-            gap        = 0,
-            timeFormat = 'mm[m]:ss[s]',
-            svg;
+            };
+
+        var svg;
+
+        var w = 20,
+            h = 80;
 
         var dispatch = d3.dispatch('customHover');
         d3.rebind(exports, dispatch, 'on');
@@ -29,31 +29,17 @@
 
         function exports(_selection) {
 
-            _selection.each(function (_data) {
+            _selection.each(function (data) {
 
-                _data = formatTimestamp(_data, timeFormat);
+                if (data.length===undefined || data.length===0) {
 
-                var xScale = d3.scale.ordinal()
-                    .domain(_data.map(function (d, i) { return d.timestamp; }))
-                    .rangeRoundBands([0, chart.width], .1);
+                    return;
+                }
 
-                var yScale = d3.scale.linear()
-                    .domain([0, d3.max(_data, function(d, i){ return d.value; })])
-                    .range([chart.height, 0]);
-
-                var xAxis = d3.svg.axis()
-                    .scale(xScale)
-                    .orient('bottom');
-
-                var yAxis = d3.svg.axis()
-                    .scale(yScale)
-                    .orient('left');
-
-                // Setup bar chart svg element
                 if (!svg) {
                     svg = d3.select(this)
-                        .append('svg')
-                        .classed('chart', true)
+                        .append('svg:svg')
+                        .attr('class', 'chart')
                         .attr('width', canvas.width)
                         .attr('height', canvas.height)
                         .call(responsivefy); // Enables responsive charting
@@ -66,92 +52,67 @@
                 svg.select('.container-group')
                     .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
 
+                var x = d3.scale.ordinal()
+                    .rangeRoundBands([0, chart.width], .1)
+                    .domain(data.map(function(d) { return d.timestamp; }));
+                var y = d3.scale.linear()
+                    .rangeRound([chart.height, 0])
+                    .domain([0, d3.max(data, function(d) { return d.value; })])
+                    .nice();
+
+                var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient('bottom');
+
+                var yAxis = d3.svg.axis()
+                    .scale(y)
+                    //.tickFormat("D")
+                    //.ticks(5)
+                    .orient('left');
+
                 // Create X axis
                 svg.select('.x-axis-group.axis')
-                    .transition()
-                    .duration(duration)
-                    .ease(ease)
                     .attr({transform: 'translate(0,' + (chart.height) + ')'})
                     .call(xAxis);
 
                 // Create Y axis
                 svg.select('.y-axis-group.axis')
                     .transition()
-                    .duration(duration)
-                    .ease(ease)
+                    .duration(300)
+                    .ease('exp')
+                    .delay(300)
                     .call(yAxis);
 
-                var gapSize  = xScale.rangeBand() / 100 * gap;
-                var barWidth = xScale.rangeBand() - gapSize;
 
-                // Data join
-                var bars = svg.select('.chart-group')
-                    .selectAll('.bar')
-                    .data(_data);
+                var rect = svg.select('.chart-group').selectAll('rect')
+                    .data(data, function(d) { return d.timestamp; });
 
-                // Enter
-                bars.enter().append('rect')
-                    .classed('bar', true)
-                    .attr({
-                        x     : function (d) { return xScale(d.timestamp); },
-                        width : barWidth,
-                        y     : function (d, i) { return yScale(d.value); },
-                        height: function (d, i) { return chart.height - yScale(d.value); }
-                    })
-                    .on('mouseover', dispatch.customHover);
-
-                // Both Enter & Update ?
-                bars
+                rect.enter().insert('svg:rect', 'line')
+                    .attr('x', function(d) { return x(d.timestamp) + 2 * x.rangeBand(); })
+                    .attr('y', function(d) { return y(d.value); })
+                    .attr('width', x.rangeBand())
+                    .attr('height', function(d) { return chart.height - y(d.value); })
                     .transition()
-                    .duration(duration)
-                    .ease(ease)
-                    .attr({
-                        width : barWidth,
-                        x     : function(d, i) { return xScale(d.timestamp) + gapSize/2; },
-                        y     : function(d, i) { return yScale(d.value); },
-                        height: function(d, i) { return chart.height - yScale(d.value); }
-                    });
+                    .duration(300)
+                    .attr('x', function(d) { return x(d.timestamp); });
 
-                // Exit
-                bars.exit().transition().style({opacity: 0}).remove();
+                rect.transition()
+                    .duration(300)
+                    .attr('x', function(d) { return x(d.timestamp); })
+                    .transition()
+                    .ease('exp')
+                    .delay(300)
+                    .attr('y', function(d) { return y(d.value); })
+                    .attr('height', function(d) { return chart.height - y(d.value); });
 
-                duration = 500;
+                rect.exit().transition()
+                    .duration(300)
+                    .style('opacity', 0)
+                    .attr('x', function(d, i) { return 0 - x.rangeBand() })
+                    .remove();
             });
-
-            // not used:
-            /*
-            this.gap = function (_x) {
-
-                if (!arguments.length) { return gap; }
-                gap = _x;
-                return this;
-            };
-            this.ease = function(_x) {
-
-                if (!arguments.length) { return ease; }
-                ease = _x;
-                return this;
-            };
-            */
         }
     };
-
-
-    function formatTimestamp(_data, format) {
-
-        format = !!format ? format : 'HH:mm:ss';
-
-        _data.map(function (d) {
-
-            if (typeof d.timestamp !=='number') {
-                return d;
-            }
-            d.timestamp = moment(d.timestamp).format(format);
-            return d;
-        });
-        return _data;
-    }
-
 
     /**
      * Responsive D3 Charting
@@ -185,4 +146,5 @@
             svg.attr('height', Math.round(targetWidth / aspect));
         }
     }
+
 })();

@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('tweetStreamApp', ['ngSanitize']);
+    angular.module('tweetStreamApp', ['ngSanitize', 'btford.socket-io']);
 })();

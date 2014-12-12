@@ -24,10 +24,12 @@
 
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-sanitize/angular-sanitize.js"></script>
+    <script src="lib/angular-socket-io/socket.js"></script>
 
     <script src="javascripts/app.js"></script>
     <script src="javascripts/config.js"></script>
     <script src="javascripts/socket.js"></script>
+
     <script src="javascripts/live-tweet-list.js"></script>
     <script src="javascripts/unsafe.filter.js"></script>
 
@@ -39,8 +41,18 @@
 
 <div class="container">
 
+    <style>
+        .chart rect, chart line {
+            fill: steelblue;
+            stroke: lightskyblue;
+            shape-rendering: crispEdges;
+        }
+    </style>
+
     <div ng-controller="TweetActivity as vm" class="col-md-offset-2 col-md-8" style="background-color: lightskyblue;">
+
         <bar-chart data="vm.data" hovered="vm.hovered(args)"></bar-chart>
+
     </div>
 
 
@@ -49,14 +61,18 @@
 
             /*jshint validthis: true*/
             var vm = this;
-
+            /*
             vm.data = [
-                {timestamp: 1417879285622, value: 10},
-                {timestamp: 1417879286622, value: 20},
-                {timestamp: 1417879287621, value: 30},
-                {timestamp: 1417879288623, value: 40},
-                {timestamp: 1417879289625, value: 50}
-            ];
+                 { timestamp: 1418372367375, value: 2 },
+                 { timestamp: 1418372369376, value: 8 },
+                 { timestamp: 1418372371396, value: 6 },
+                 { timestamp: 1418372373400, value: 8 },
+                 { timestamp: 1418372375410, value: 3 },
+                 { timestamp: 1418372377418, value: 9 }
+             ];
+             */
+            vm.data = [];
+
 
 //            vm.options = {width: 300, height: 150, 'bar': 'aaa'};
             vm.hovered = function (d) {

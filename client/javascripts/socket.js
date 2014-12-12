@@ -13,15 +13,17 @@
     angular.module('tweetStreamApp')
         .factory(serviceId, socket);
 
-    socket.$inject = ['$rootScope', 'config'];
+    socket.$inject = ['config', 'socketFactory'];
 
-    function socket($rootScope, config) {
+    function socket(config, socketFactory) {
 
         var socket = io.connect(config.tweetStreamUrl);
-        var service = {
-            on  : on,
-            emit: emit
-        };
+
+        var service = socketFactory({
+            ioSocket: socket
+        });
+
+
         activate();
 
         return service;
@@ -29,31 +31,6 @@
         ///////////////
 
 
-        function on(eventName, callback) {
-
-            socket.on(eventName, function () {
-
-                var args = arguments;
-                $rootScope.$apply(function () {
-
-                    callback.apply(socket, args);
-                });
-            });
-        }
-
-        function emit(eventName, data, callback) {
-
-            socket.emit(eventName, data, function () {
-
-                var args = arguments;
-                $rootScope.$apply(function () {
-
-                    if (callback) {
-                        callback.apply(socket, args);
-                    }
-                });
-            })
-        }
 
         function activate() {
 

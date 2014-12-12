@@ -32,7 +32,6 @@
 
         /////////////////
 
-
         function linkFunction(scope, element, attributes) {
 
             var chartElement = d3.select(element[0]);
@@ -41,10 +40,10 @@
                 scope.hovered({args:d});
             });
 
-            scope.$watch('data', function (newVal, oldVal) {
+            scope.$watch('data', function (newVal) {
 
                 chartElement.datum(newVal).call(chart);
-            });
+            }, true);
         }
     }
 
