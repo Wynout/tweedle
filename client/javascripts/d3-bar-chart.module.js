@@ -1,4 +1,5 @@
 /**
+ * Timeline barchart inspired by:
  * @link https://strongriley.github.io/d3/tutorial/bar-2.html
  */
 (function () {
@@ -8,17 +9,15 @@
 
     d3.custom.barChart = function module() {
 
-        var canvas = {width: 600, height: 200},
-            margin = {top: 20, right: 20, bottom: 40, left: 40},
+        var canvas = {width: 600, height: 250},
+            margin = {top: 20, right: 20, bottom: 60, left: 40},
             chart  = {
                 width : canvas.width  - margin.left - margin.right,
                 height: canvas.height - margin.top  - margin.bottom
-            };
-
-        var svg;
-
-        var w = 20,
-            h = 80;
+            },
+            delay = 300,
+            ease  = 'exp',
+            svg;
 
         var dispatch = d3.dispatch('customHover');
         d3.rebind(exports, dispatch, 'on');
@@ -66,21 +65,27 @@
 
                 var yAxis = d3.svg.axis()
                     .scale(y)
-                    //.tickFormat("D")
-                    //.ticks(5)
+                    .ticks(6)
                     .orient('left');
 
                 // Create X axis
                 svg.select('.x-axis-group.axis')
                     .attr({transform: 'translate(0,' + (chart.height) + ')'})
-                    .call(xAxis);
+                    .call(xAxis)
+                  .selectAll('text')
+                    .style('text-anchor', 'end')
+                    .style('font-size', '.8em')
+                    .attr('dx', '-.8em')
+                    .attr('dy', '-0.45em')
+                    .attr('transform', function () { return 'rotate(-90)' })
+                    .text(function (d) { return moment(d).format('HH:mm:ss') });
 
                 // Create Y axis
                 svg.select('.y-axis-group.axis')
                     .transition()
-                    .duration(300)
-                    .ease('exp')
-                    .delay(300)
+                    .duration(delay)
+                    .ease(ease)
+                    .delay(delay)
                     .call(yAxis);
 
 
@@ -93,20 +98,20 @@
                     .attr('width', x.rangeBand())
                     .attr('height', function(d) { return chart.height - y(d.value); })
                     .transition()
-                    .duration(300)
+                    .duration(delay)
                     .attr('x', function(d) { return x(d.timestamp); });
 
                 rect.transition()
-                    .duration(300)
+                    .duration(delay)
                     .attr('x', function(d) { return x(d.timestamp); })
                     .transition()
-                    .ease('exp')
-                    .delay(300)
+                    .ease(ease)
+                    .delay(delay)
                     .attr('y', function(d) { return y(d.value); })
                     .attr('height', function(d) { return chart.height - y(d.value); });
 
                 rect.exit().transition()
-                    .duration(300)
+                    .duration(delay)
                     .style('opacity', 0)
                     .attr('x', function(d, i) { return 0 - x.rangeBand() })
                     .remove();
@@ -146,5 +151,4 @@
             svg.attr('height', Math.round(targetWidth / aspect));
         }
     }
-
 })();
