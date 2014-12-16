@@ -35,7 +35,7 @@
         function linkFunction(scope, element, attributes) {
 
             var chartElement = d3.select(element[0]);
-            chart.on('customHover', function (d, i) {
+            chart.on('barHover', function (d, i) {
 
                 scope.hovered({args:d});
             });

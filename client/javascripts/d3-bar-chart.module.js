@@ -9,7 +9,7 @@
 
     d3.custom.barChart = function module() {
 
-        var canvas = {width: 600, height: 250},
+        var canvas = {width: 1024, height: 250},
             margin = {top: 20, right: 20, bottom: 60, left: 40},
             chart  = {
                 width : canvas.width  - margin.left - margin.right,
@@ -19,7 +19,7 @@
             ease  = 'exp',
             svg;
 
-        var dispatch = d3.dispatch('customHover');
+        var dispatch = d3.dispatch('barHover');
         d3.rebind(exports, dispatch, 'on');
 
         return exports;
@@ -40,8 +40,8 @@
                         .append('svg:svg')
                         .attr('class', 'chart')
                         .attr('width', canvas.width)
-                        .attr('height', canvas.height)
-                        .call(responsivefy); // Enables responsive charting
+                        .attr('height', canvas.height);
+                        //.call(responsivefy); // Enables responsive charting (disabled because of scaling issues)
 
                     var container = svg.append('g').classed('container-group', true);
                     container.append('g').classed('chart-group', true);
@@ -53,7 +53,7 @@
 
                 var x = d3.scale.ordinal()
                     .rangeRoundBands([0, chart.width], .1)
-                    .domain(data.map(function(d) { return d.timestamp; }));
+                    .domain(data.map(function(d) { return d.minute; }));
                 var y = d3.scale.linear()
                     .rangeRound([chart.height, 0])
                     .domain([0, d3.max(data, function(d) { return d.value; })])
@@ -65,8 +65,8 @@
 
                 var yAxis = d3.svg.axis()
                     .scale(y)
-                    .ticks(6)
-                    .orient('left');
+                    .orient('left')
+                    .ticks(6, 's');
 
                 // Create X axis
                 svg.select('.x-axis-group.axis')
@@ -78,7 +78,8 @@
                     .attr('dx', '-.8em')
                     .attr('dy', '-0.45em')
                     .attr('transform', function () { return 'rotate(-90)' })
-                    .text(function (d) { return moment(d).format('HH:mm:ss') });
+                    .text(function (d) { return d; });
+                    //.text(function (d) { return moment(d).format('HH:mm:ss') });
 
                 // Create Y axis
                 svg.select('.y-axis-group.axis')
@@ -93,17 +94,18 @@
                     .data(data, function(d) { return d.timestamp; });
 
                 rect.enter().insert('svg:rect', 'line')
-                    .attr('x', function(d) { return x(d.timestamp) + 2 * x.rangeBand(); })
+                    .attr('x', function(d) { return x(d.minute) + 2 * x.rangeBand(); })
                     .attr('y', function(d) { return y(d.value); })
                     .attr('width', x.rangeBand())
                     .attr('height', function(d) { return chart.height - y(d.value); })
+                    .on('mouseover', dispatch.barHover)
                     .transition()
                     .duration(delay)
-                    .attr('x', function(d) { return x(d.timestamp); });
+                    .attr('x', function(d) { return x(d.minute); });
 
                 rect.transition()
                     .duration(delay)
-                    .attr('x', function(d) { return x(d.timestamp); })
+                    .attr('x', function(d) { return x(d.minute); })
                     .transition()
                     .ease(ease)
                     .delay(delay)

@@ -42,14 +42,19 @@
 <div class="container">
 
     <style>
-        .chart rect, chart line {
+        .chart rect {
             fill: steelblue;
             stroke: lightskyblue;
             shape-rendering: crispEdges;
         }
+        .chart line {
+            fill: #696969;
+            stroke: #696969;
+            shape-rendering: crispEdges;
+        }
     </style>
 
-    <div ng-controller="TweetActivity as vm" class="col-md-offset-2 col-md-8" style="background-color: lightskyblue;">
+    <div ng-controller="TweetActivity as vm" class="<!--col-md-offset-2 col-md-8-->" style="<!--background-color: lightskyblue;-->">
 
         <bar-chart data="vm.data" hovered="vm.hovered(args)"></bar-chart>
 
@@ -57,6 +62,7 @@
 
 
     <script>
+        // todo: Refactor: move this to a a controller file
         angular.module('tweetStreamApp').controller('TweetActivity', function ($scope, socket) {
 
             /*jshint validthis: true*/
@@ -75,15 +81,22 @@
 
             vm.hovered = function (d) {
 
-                vm.barValue = d;
-                $scope.$apply();
+                console.log(d);
+//                vm.barValue = d;
+//                $scope.$apply();
             };
             vm.barValue = 'None';
 
             socket.on('tweet-count-history', function (data) {
 
+//                vm.data = data;
+            });
+            
+            socket.on('tweet-count-minute-history', function (data) {
+
                 vm.data = data;
             });
+            
         });
     </script>
 
