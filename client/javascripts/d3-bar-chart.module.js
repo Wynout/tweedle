@@ -4,6 +4,7 @@
  */
 (function () {
     'use strict';
+    /*global d3*/
 
     d3.custom = {};
 
@@ -17,20 +18,22 @@
             },
             delay = 300,
             ease  = 'exp',
-            svg;
+            dispatch = d3.dispatch('barHover');
 
-        var dispatch = d3.dispatch('barHover');
-        d3.rebind(exports, dispatch, 'on');
 
-        return exports;
+        function exports(selection) {
 
-        ///////////////
+            selection.each(function (data) {
 
-        function exports(_selection) {
+                var container,
+                    x,
+                    xAxis,
+                    y,
+                    yAxis,
+                    rect,
+                    svg;
 
-            _selection.each(function (data) {
-
-                if (data.length===undefined || data.length===0) {
+                if (data.length === undefined || data.length === 0) {
 
                     return;
                 }
@@ -43,7 +46,7 @@
                         .attr('height', canvas.height);
                         //.call(responsivefy); // Enables responsive charting (disabled because of scaling issues)
 
-                    var container = svg.append('g').classed('container-group', true);
+                    container = svg.append('g').classed('container-group', true);
                     container.append('g').classed('chart-group', true);
                     container.append('g').classed('x-axis-group axis', true);
                     container.append('g').classed('y-axis-group axis', true);
@@ -51,19 +54,20 @@
                 svg.select('.container-group')
                     .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
 
-                var x = d3.scale.ordinal()
-                    .rangeRoundBands([0, chart.width], .1)
-                    .domain(data.map(function(d) { return d.minute; }));
-                var y = d3.scale.linear()
+                x = d3.scale.ordinal()
+                    .rangeRoundBands([0, chart.width], 0.1)
+                    .domain(data.map(function (d) { return d.minute; }));
+
+                y = d3.scale.linear()
                     .rangeRound([chart.height, 0])
-                    .domain([0, d3.max(data, function(d) { return d.value; })])
+                    .domain([0, d3.max(data, function (d) { return d.value; })])
                     .nice();
 
-                var xAxis = d3.svg.axis()
+                xAxis = d3.svg.axis()
                     .scale(x)
                     .orient('bottom');
 
-                var yAxis = d3.svg.axis()
+                yAxis = d3.svg.axis()
                     .scale(y)
                     .orient('left')
                     .ticks(6, 's');
@@ -72,14 +76,14 @@
                 svg.select('.x-axis-group.axis')
                     .attr({transform: 'translate(0,' + (chart.height) + ')'})
                     .call(xAxis)
-                  .selectAll('text')
-                    .style('text-anchor', 'end')
-                    .style('font-size', '.8em')
-                    .attr('dx', '-.8em')
-                    .attr('dy', '-0.45em')
-                    .attr('transform', function () { return 'rotate(-90)' })
-                    .text(function (d) { return d; });
-                    //.text(function (d) { return moment(d).format('HH:mm:ss') });
+                    .selectAll('text')
+                        .style('text-anchor', 'end')
+                        .style('font-size', '.8em')
+                        .attr('dx', '-.8em')
+                        .attr('dy', '-0.45em')
+                        .attr('transform', function () { return 'rotate(-90)'; })
+                        .text(function (d) { return d; });
+                        //.text(function (d) { return moment(d).format('HH:mm:ss') });
 
                 // Create Y axis
                 svg.select('.y-axis-group.axis')
@@ -90,41 +94,45 @@
                     .call(yAxis);
 
 
-                var rect = svg.select('.chart-group').selectAll('rect')
-                    .data(data, function(d) { return d.timestamp; });
+                rect = svg.select('.chart-group').selectAll('rect')
+                    .data(data, function (d) { return d.timestamp; });
 
                 rect.enter().insert('svg:rect', 'line')
-                    .attr('x', function(d) { return x(d.minute) + 2 * x.rangeBand(); })
-                    .attr('y', function(d) { return y(d.value); })
+                    .attr('x', function (d) { return x(d.minute) + 2 * x.rangeBand(); })
+                    .attr('y', function (d) { return y(d.value); })
                     .attr('width', x.rangeBand())
-                    .attr('height', function(d) { return chart.height - y(d.value); })
+                    .attr('height', function (d) { return chart.height - y(d.value); })
                     .on('mouseover', dispatch.barHover)
                     .transition()
                     .duration(delay)
-                    .attr('x', function(d) { return x(d.minute); });
+                    .attr('x', function (d) { return x(d.minute); });
 
                 rect.transition()
                     .duration(delay)
-                    .attr('x', function(d) { return x(d.minute); })
+                    .attr('x', function (d) { return x(d.minute); })
                     .transition()
                     .ease(ease)
                     .delay(delay)
-                    .attr('y', function(d) { return y(d.value); })
-                    .attr('height', function(d) { return chart.height - y(d.value); });
+                    .attr('y', function (d) { return y(d.value); })
+                    .attr('height', function (d) { return chart.height - y(d.value); });
 
                 rect.exit().transition()
                     .duration(delay)
                     .style('opacity', 0)
-                    .attr('x', function(d, i) { return 0 - x.rangeBand() })
+                    .attr('x', function () { return -1 * x.rangeBand(); })
                     .remove();
             });
         }
+
+        d3.rebind(exports, dispatch, 'on');
+        return exports;
     };
 
     /**
      * Responsive D3 Charting
      * @link http://www.brendansudol.com/posts/responsive-d3/
      */
+    /*
     function responsivefy(svg) {
 
         // get container + svg aspect ratio
@@ -152,5 +160,5 @@
             svg.attr('width', targetWidth);
             svg.attr('height', Math.round(targetWidth / aspect));
         }
-    }
-})();
+    }*/
+}());
