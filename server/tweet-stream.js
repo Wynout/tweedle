@@ -1,10 +1,11 @@
-/*jshint node:true*/
+/*jslint node: true */
 'use strict';
 
 var config      = require('./../config.json'),
-    TweetStream = require('node-tweet-stream');
-    var twitter     = new TweetStream(config.twitter_api);
-var moment = require('moment');
+    TweetStream = require('node-tweet-stream'),
+    twitter     = new TweetStream(config.twitter_api),
+    moment      = require('moment');
+
 
 module.exports = function (io) {
 
@@ -12,44 +13,18 @@ module.exports = function (io) {
         lastRecordedMinute = -1;
 
 
-    /**
-    * Setup Twitter Stream
-    */
-    twitter.on('tweet', function (tweet) {
-
-        incrementMinuteHistory();
-        io.emit('tweet', tweet);
-        console.log(tweet.text)
-    });
-    twitter.track('sydney');
-
-
-    /**
-     * Setup Socket Events
-     */
-    io.on('connection', function (socket) {
-
-        console.log('Client connected:', socket.handshake.address, socket.handshake.time);
-    });
-    io.on('error', function (error) {
-
-        console.log('Twitter error:', error);
-    });
-
+    // Initialize the minutes array
     function initialize() {
 
-        var now              = moment(),
-            minuteExact      = [now.year(), now.month(), now.date(), now.hour(), now.minute(), 0],
-            currentTimestamp = moment(minuteExact).valueOf(); // timestamp of current minute, exact (seconds 0)
+        var now          = moment(),
+            minuteExact  = [now.year(), now.month(), now.date(), now.hour(), now.minute(), 0],
+            nowTimestamp = moment(minuteExact).valueOf(), // timestamp of current minute, exact (seconds 0)
+            currentTimestamp,
+            i;
 
-        for (var i = 0; i < 60; i++) {
-
-            var timestamp = moment(currentTimestamp).subtract(59 - i, 'minutes').valueOf();
-            minutes.push({
-                timestamp: timestamp,
-                value    : 0,
-                minute   : i
-            });
+        for (i = 0; i < 60; i += 1) {
+            currentTimestamp = moment(nowTimestamp).subtract(59 - i, 'minutes').valueOf();
+            minutes.push({ timestamp: currentTimestamp, value: 0, minute: i });
         }
     }
     initialize();
@@ -63,56 +38,76 @@ module.exports = function (io) {
 
     function incrementMinuteHistory() {
 
-        var currentMinute = getCurrentMinute();
-        console.log('currentMinute = ', currentMinute);
+        var currentMinute = getCurrentMinute(),
+            minuteTimestamp,
+            now;
 
-        // init last recorded minute
-        if (lastRecordedMinute<0) {
+        // Initialize last recorded minute
+        if (lastRecordedMinute < 0) {
             lastRecordedMinute = currentMinute;
             console.info('init last recorded minute: ', lastRecordedMinute);
         }
 
-        // need to reset counter of current minute
-        if (lastRecordedMinute!==currentMinute) {
-            console.log('need to reset counter of current minute');
-
-            var now = moment();
-            var minuteTimestamp = moment([now.year(), now.month(), now.date(), now.hour(), now.minute(), 0]).valueOf(); // timestamp of current minute, exact (seconds 0)
-            console.log(minuteTimestamp);
-
+        // Reset counter of current minute
+        if (lastRecordedMinute !== currentMinute) {
+            now             = moment();
+            minuteTimestamp = moment([now.year(), now.month(), now.date(), now.hour(), now.minute(), 0]).valueOf(); // timestamp of current minute, exact (seconds 0)
             minutes[currentMinute].timestamp = moment(minuteTimestamp).valueOf();
             minutes[currentMinute].value = 0;
         }
 
-        // increment counter current minute
+        // Increment counter current minute
         minutes[currentMinute].value += 1;
         minutes[currentMinute].minute = currentMinute;
         lastRecordedMinute = currentMinute;
     }
 
-    //http://plnkr.co/edit/47kbn8auHiVHuyMTb9yd?p=preview
+
     function getMinuteHistory() {
 
-        var left = [], right = [], history = [];
-        var currentMinute = getCurrentMinute();
+        var left    = [],
+            right   = [],
+            history = [],
+            minute  = getCurrentMinute();
 
-        if (currentMinute===59) {
-
+        if (minute === 59) {
             history = minutes;
         } else {
-            left    = minutes.slice(currentMinute + 1);
-            right   = minutes.slice(0, currentMinute + 1);
+            left    = minutes.slice(minute + 1);
+            right   = minutes.slice(0, minute + 1);
             history = left.concat(right);
         }
         return history;
     }
 
 
+    /**
+     * Setup Twitter Stream
+     */
+    twitter.on('tweet', function (tweet) {
+
+        incrementMinuteHistory();
+        io.emit('tweet', tweet);
+    });
+    twitter.track('sydney');
+
+
+    /**
+     * Setup Socket Events
+     */
+    io.on('connection', function (socket) {
+
+        console.info('Client connected:', socket.handshake.address, socket.handshake.time);
+    });
+    io.on('error', function (error) {
+
+        console.error('Twitter error:', error);
+    });
+
+
     // Send minute history
     setInterval(function () {
 
         io.emit('tweet-count-minute-history', getMinuteHistory());
-
     }, 1000);
-
 };
