@@ -89,7 +89,6 @@ module.exports = function (io) {
         incrementMinuteHistory();
         io.emit('tweet', tweet);
     });
-    twitter.track('sydney');
 
 
     /**
@@ -110,4 +109,14 @@ module.exports = function (io) {
 
         io.emit('tweet-count-minute-history', getMinuteHistory());
     }, 1000);
+
+
+    return {
+
+        track: function (filter) {
+
+            twitter.track(filter);
+        }
+    };
+
 };

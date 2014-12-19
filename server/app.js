@@ -39,6 +39,12 @@ app.get('/', function (req, res) {
 
 
 /**
+ * Start tracking tweets
+ */
+tweetStream.track('amsterdam');
+
+
+/**
  * Start Serving
  */
 server.listen(port, function () {
