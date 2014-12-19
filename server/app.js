@@ -2,21 +2,20 @@
 'use strict';
 
 var compress    = require('compression'),
-    config      = require('./../config.json'),
     express     = require('express'),
     app         = require('express')(),
     favicon     = require('serve-favicon'),
     http        = require('http'),
     server      = http.createServer(app),
-    io          = require('socket.io')(server),
-    tweetStream = require('./tweet-stream')(io),
+    sio         = require('socket.io')(server),
+    tweetStream = require('./tweet-stream')(sio),
     logger      = require('morgan'),
-    port        = process.env['PORT'] || 3000;
+    port        = process.env.PORT || 3000;
 
-var appDir      =  __dirname + '/../client/'; // Our code is served from client directory
-var environment = process.env.NODE_ENV;
-var pkg         = './../package.json';
-
+var appDir      =  __dirname + '/../client/', // Our code is served from client directory
+    environment = process.env.NODE_ENV;
+    // config      = require('./../config.json'),
+    // pkg         = './../package.json';
 
 /**
  * Setup Express
@@ -35,7 +34,7 @@ console.log('NODE_ENV=' + environment);
  */
 app.get('/', function (req, res) {
 
-    res.redirect('/index.html')
+    res.redirect('/index.html');
 });
 
 
