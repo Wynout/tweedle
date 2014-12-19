@@ -2,10 +2,10 @@
  * Timeline barchart inspired by:
  * @link https://strongriley.github.io/d3/tutorial/bar-2.html
  */
-(function () {
+(function (window, d3) {
     'use strict';
-    /*global d3*/
 
+    /*global d3*/
     d3.custom = {};
 
     d3.custom.barChart = function module() {
@@ -18,6 +18,7 @@
             },
             delay = 300,
             ease  = 'exp',
+            svg,
             dispatch = d3.dispatch('barHover');
 
 
@@ -25,13 +26,13 @@
 
             selection.each(function (data) {
 
-                var container,
+                var
+                    container,
                     x,
                     xAxis,
                     y,
                     yAxis,
-                    rect,
-                    svg;
+                    rect;
 
                 if (data.length === undefined || data.length === 0) {
 
@@ -160,5 +161,6 @@
             svg.attr('width', targetWidth);
             svg.attr('height', Math.round(targetWidth / aspect));
         }
-    }*/
-}());
+    }
+    */
+})(window, d3);
