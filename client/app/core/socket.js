@@ -8,29 +8,26 @@
 (function () {
     'use strict';
 
-    var serviceId = 'socket';
+    angular
+        .module('app.core')
+        .factory('socket', socket);
 
-    angular.module('tweetStreamApp')
-        .factory(serviceId, socket);
+    socket.$inject = ['socketFactory'];
 
-    socket.$inject = ['config', 'socketFactory'];
+    /* @ngInject */
+    function socket(socketFactory) {
 
-    function socket(config, socketFactory) {
-
-        var socket = io.connect(config.tweetStreamUrl);
+        //var socket = io.connect(config.tweetStreamUrl);
+        var socket = io.connect('http://localhost:3000');
 
         var service = socketFactory({
             ioSocket: socket
         });
 
-
         activate();
 
         return service;
-
         ///////////////
-
-
 
         function activate() {
 
@@ -90,4 +87,5 @@
             });*/
         }
     }
+
 })();

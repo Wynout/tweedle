@@ -5,14 +5,22 @@
 (function () {
     'use strict';
 
-    angular.module('tweetStreamApp')
-        .directive('barChart', barChart);
+    angular
+        .module('app.widgets')
+        .directive('tsBarChart', tsBarChart);
 
-    barChart.$inject = ['$window'];
+    tsBarChart.$inject = ['d3'];
 
-    function barChart($window) {
+    /* @ngInject */
+    function tsBarChart(d3) {
+        // Usage:
+        // <ts-bar-chart data="vm.data" hovered="vm.hovered(args)"></ts-bar-chart>
+        // Creates:
+        // <div class="chart ng-isolate-scope" data="vm.data" hovered="vm.hovered(args)">
+        //     <svg class="chart" width="1024" height="250">...</svg>
+        // </div>
 
-        var chart = $window.d3.custom.barChart();
+        var chart = d3.custom.barChart();
         var directive = {
             restrict: 'E',
             replace : true,
@@ -29,7 +37,6 @@
         };
 
         return directive;
-
         /////////////////
 
         function linkFunction(scope, element, attributes) {
@@ -54,10 +61,11 @@
      */
     BarChartController.$inject = ['$scope'];
 
+    /* @ngInject */
     function BarChartController($scope) {
 
         // Injecting $scope just for comparison
-        /*jshint validthis: true*/
+        /* jshint validthis:true */
         var vm = this;
     }
 })();

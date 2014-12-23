@@ -22,7 +22,7 @@ var appDir      =  __dirname + '/../client/', // Our code is served from client 
  */
 app.use(compress({threshold: 512})); // Compress response data with gzip when byte size >= threshold
 app.use(express.static(appDir));
-app.use(favicon(appDir + 'images/favicon.ico'));
+app.use(favicon(appDir + 'content/images/favicon.ico'));
 app.use(logger('dev'));
 
 console.log('PORT=' + port);

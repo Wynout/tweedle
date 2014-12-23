@@ -5,7 +5,7 @@
 (function (window, d3) {
     'use strict';
 
-    /*global d3*/
+    /* global d3:false */
     d3.custom = {};
 
     d3.custom.barChart = function module() {
@@ -26,8 +26,7 @@
 
             selection.each(function (data) {
 
-                var
-                    container,
+                var container,
                     x,
                     xAxis,
                     y,
@@ -99,6 +98,7 @@
                     .data(data, function (d) { return d.timestamp; });
 
                 rect.enter().insert('svg:rect', 'line')
+                    .classed('bar', true)
                     .attr('x', function (d) { return x(d.minute) + 2 * x.rangeBand(); })
                     .attr('y', function (d) { return y(d.value); })
                     .attr('width', x.rangeBand())
@@ -163,4 +163,5 @@
         }
     }
     */
+
 })(window, d3);

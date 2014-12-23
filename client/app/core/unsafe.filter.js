@@ -1,13 +1,13 @@
 (function () {
     'use strict';
 
-    var filterId = 'unsafe';
-
-    angular.module('tweetStreamApp')
-        .filter(filterId, unsafe);
+    angular
+        .module('app.core')
+        .filter('unsafe', unsafe);
 
     unsafe.$inject = ['$sce'];
 
+    /* @ngInject */
     function unsafe($sce) {
 
         return function (value) {
@@ -15,4 +15,5 @@
             return $sce.trustAsHtml(value);
         };
     }
+
 })();

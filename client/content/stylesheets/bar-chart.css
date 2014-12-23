@@ -6,10 +6,18 @@ body {
     stroke: black;
     shape-rendering: crispEdges;
 }
-.axis path{
+.axis path {
     fill: none;
     stroke: none;
 }
-.bar {
+
+.chart .bar {
     fill: steelblue;
+    stroke: lightskyblue;
+    shape-rendering: crispEdges;
+}
+.chart line {
+    fill: #696969;
+    stroke: #696969;
+    shape-rendering: crispEdges;
 }

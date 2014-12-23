@@ -1,121 +1,87 @@
 <!DOCTYPE html>
-<html ng-app="tweetStreamApp">
+<html data-ng-app="app">
 <head lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <style>
+        /* This helps the ng-show/ng-hide animations start at the right place. */
+        /* Since Angular has this but needs to load, this gives us the class early. */
+        .ng-hide {
+            display: none!important;
+        }
+    </style>
+    <title data-ng-bind="title">TweetStream Angular</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
 
     <!--[if IE]>
-    <link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css"/>
+    <link href="content/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css"/>
     <![endif]-->
 
-    <!--Bootstrap-->
+    <!-- inject-vendor:css -->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.css"/>
+    <link rel="stylesheet" href="lib/toastr/toastr.css"/>
 
-    <!--D3 Bar Chart-->
-    <link rel="stylesheet" href="stylesheets/bar-chart.css"/>
+    <!-- Custom D3 Bar Chart -->
+    <link rel="stylesheet" href="content/stylesheets/bar-chart.css"/>
 
-    <!--Global override-->
-    <link rel="stylesheet" href="stylesheets/style.css"/>
+    <!-- Global override -->
+    <link rel="stylesheet" href="content/stylesheets/style.css"/>
 
+    <!-- inject-vendor:js -->
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
+    <script src="lib/angular-socket-io/socket.js"></script>
     <script src="lib/socket.io-client/socket.io.js"></script>
     <script src="lib/d3/d3.js"></script>
     <script src="lib/moment/moment.js"></script>
+    <script src="lib/toastr/toastr.js"></script>
 
-    <script src="lib/angular/angular.js"></script>
-    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
-    <script src="lib/angular-socket-io/socket.js"></script>
+    <!-- inject-custom:js -->
+    <script src="app/blocks/d3/bar-chart.module.js"></script>
 
-    <script src="javascripts/app.js"></script>
-    <script src="javascripts/config.js"></script>
-    <script src="javascripts/socket.js"></script>
+    <!-- inject:js -->
+    <!-- Bootstrapping -->
+    <script src="app/app.module.js"></script>
 
-    <script src="javascripts/live-tweet-list.js"></script>
-    <script src="javascripts/unsafe.filter.js"></script>
+    <!-- Reusable Blocks/Modules -->
+    <script src="app/blocks/exception/exception.module.js"></script>
+    <script src="app/blocks/exception/exception-handler.js"></script>
+    <script src="app/blocks/exception/exception.js"></script>
+    <script src="app/blocks/logger/logger.module.js"></script>
+    <script src="app/blocks/logger/logger.js"></script>
+    <script src="app/blocks/router/router.module.js"></script>
+    <script src="app/blocks/router/routehelper.js"></script>
 
-    <script src="javascripts/d3-bar-chart.module.js"></script>
-    <script src="javascripts/bar-chart.directive.js"></script>
-    <title>Prototype Test</title>
+    <!-- core module -->
+    <script src="app/core/core.module.js"></script>
+    <script src="app/core/constants.js"></script>
+    <script src="app/core/config.js"></script>
+    <script src="app/core/dataservice.js"></script>
+    <script src="app/core/socket.js"></script>
+    <script src="app/core/unsafe.filter.js"></script>
+
+    <!-- layout -->
+    <script src="app/layout/layout.module.js"></script>
+
+    <!--widgets-->
+    <script src="app/widgets/widgets.module.js"></script>
+    <script src="app/widgets/tsBarChart.js"></script>
+
+    <!-- dashboard -->
+    <script src="app/dashboard/dashboard.module.js"></script>
+    <script src="app/dashboard/config.route.js"></script>
+    <script src="app/dashboard/dashboard.js"></script>
+
+    <!-- stream -->
+    <script src="app/stream/stream.module.js"></script>
+    <script src="app/stream/config.route.js"></script>
+    <script src="app/stream/stream.js"></script>
 </head>
 <body>
-
-<div class="container">
-
-    <style>
-        .chart rect {
-            fill: steelblue;
-            stroke: lightskyblue;
-            shape-rendering: crispEdges;
-        }
-        .chart line {
-            fill: #696969;
-            stroke: #696969;
-            shape-rendering: crispEdges;
-        }
-    </style>
-
-    <div ng-controller="TweetActivity as vm" class="<!--col-md-offset-2 col-md-8-->" style="<!--background-color: lightskyblue;-->">
-
-        <bar-chart data="vm.data" hovered="vm.hovered(args)"></bar-chart>
-
-    </div>
-
-
-    <script>
-        // todo: Refactor: move this to a a controller file
-        angular.module('tweetStreamApp').controller('TweetActivity', function ($scope, socket) {
-
-            /*jshint validthis: true*/
-            var vm = this;
-            /*
-            vm.data = [
-                 { timestamp: 1418372367375, value: 2 },
-                 { timestamp: 1418372369376, value: 8 },
-                 { timestamp: 1418372371396, value: 6 },
-                 { timestamp: 1418372373400, value: 8 },
-                 { timestamp: 1418372375410, value: 3 },
-                 { timestamp: 1418372377418, value: 9 }
-             ];
-             */
-            vm.data = [];
-
-            vm.hovered = function (d) {
-
-                console.log(d);
-//                vm.barValue = d;
-//                $scope.$apply();
-            };
-            vm.barValue = 'None';
-
-            socket.on('tweet-count-history', function (data) {
-
-//                vm.data = data;
-            });
-            
-            socket.on('tweet-count-minute-history', function (data) {
-
-                vm.data = data;
-            });
-            
-        });
-    </script>
-
-
-    <div ng-controller="LiveTweetList as vm" class="col-md-offset-2 col-md-8">
-        <h1>Total Tweets Received: {{vm.count}}</h1>
-
-        <div ng-repeat="tweet in vm.tweets track by $index" class="well well-sm">
-            <div ng-if="settings.profilePicturesEnabled">
-                <img ng-src="{{tweet.user.profile_image_url_https}}" alt="" class="profile__image"/>
-            </div>
-            <div>
-                <div class="tweet__timestamp">{{tweet.timestamp_ms | date:'medium'}}</div>
-                <div ng-bind-html="tweet.text | linky | unsafe"></div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
+    <div data-ng-include="'app/layout/shell.html'"></div>
 </body>
 </html>

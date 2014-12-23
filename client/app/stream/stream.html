@@ -1,0 +1,17 @@
+﻿<div class="col-md-8" style="<!--background-color: lightskyblue;-->">
+    <ts-bar-chart data="vm.data" hovered="vm.hovered(args)"></ts-bar-chart>
+</div>
+
+<div class="col-md-offset-2 col-md-8">
+    <h1>Total Tweets Received: {{vm.count}}</h1>
+
+    <div ng-repeat="tweet in vm.tweets track by $index" class="well well-sm">
+        <div ng-if="settings.profilePicturesEnabled">
+            <img ng-src="{{tweet.user.profile_image_url_https}}" alt="" class="profile__image"/>
+        </div>
+        <div>
+            <div class="tweet__timestamp">{{tweet.timestamp_ms | date:'medium'}}</div>
+            <div ng-bind-html="tweet.text | linky | unsafe"></div>
+        </div>
+    </div>
+</div>
