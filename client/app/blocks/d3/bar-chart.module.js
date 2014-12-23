@@ -93,6 +93,15 @@
                     .delay(delay)
                     .call(yAxis);
 
+                // Create tooltips
+                var tip = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function (d) {
+
+                        return "<strong>Tweets:</strong> <span class='tip-value'>" + d.value + "</span>";
+                    });
+                svg.call(tip);
 
                 rect = svg.select('.chart-group').selectAll('rect')
                     .data(data, function (d) { return d.timestamp; });
@@ -103,7 +112,12 @@
                     .attr('y', function (d) { return y(d.value); })
                     .attr('width', x.rangeBand())
                     .attr('height', function (d) { return chart.height - y(d.value); })
-                    .on('mouseover', dispatch.barHover)
+                    .on('mouseover', function (d) {
+
+                        tip.show(d);
+                        dispatch.barHover(d);
+                    })
+                    .on('mouseout', tip.hide)
                     .transition()
                     .duration(delay)
                     .attr('x', function (d) { return x(d.minute); });
