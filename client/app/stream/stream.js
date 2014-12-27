@@ -17,7 +17,7 @@
         vm.count    = 0;
         vm.title    = 'Live Tweet Stream List';
         vm.settings = {
-            profilePicturesEnabled: false
+            profilePicturesEnabled: true
         };
 
         activate();
@@ -45,6 +45,14 @@
             console.log(d);
             //vm.barValue = d;
             //$scope.$apply();
+        };
+
+        vm.isRetweeted = function (tweet) {
+
+            if (tweet.retweeted || tweet.text.indexOf('RT ')===0) {
+                return true;
+            }
+            return false;
         };
 
     }

@@ -1,17 +1,27 @@
-﻿<div class="col-md-8" style="<!--background-color: lightskyblue;-->">
-    <ts-bar-chart data="vm.data" hovered="vm.hovered(args)"></ts-bar-chart>
-</div>
-
-<div class="col-md-offset-2 col-md-8">
+﻿<div class="container" style="margin: 0 auto;">
     <h1>Total Tweets Received: {{vm.count}}</h1>
+    <div>
+        <ts-bar-chart data="vm.data" hovered="vm.hovered(args)"></ts-bar-chart>
+    </div>
 
-    <div ng-repeat="tweet in vm.tweets track by $index" class="well well-sm">
-        <div ng-if="settings.profilePicturesEnabled">
-            <img ng-src="{{tweet.user.profile_image_url_https}}" alt="" class="profile__image"/>
-        </div>
-        <div>
-            <div class="tweet__timestamp">{{tweet.timestamp_ms | date:'medium'}}</div>
-            <div ng-bind-html="tweet.text | linky | unsafe"></div>
+    <div class="tweets">
+
+        <div class="tweet" ng-repeat="tweet in vm.tweets track by $index">
+
+            <div class="tweet__context" ng-if="vm.isRetweeted(tweet)">
+                <span class="icon"><!--todo: insert retweet icon--></span>
+                <span class="user__retweeted">{{tweet.user.name}} retweeted</span>
+            </div>
+            <div class="tweet__header">
+                <a class="profile__link" href="">
+                    <img class="profile__image" ng-src="{{tweet.user.profile_image_url_https}}" alt=""/>
+                </a>
+                <strong class="fullname">{{tweet.user.name}}</strong>
+                <span class="username">@{{tweet.user.screen_name}}</span>
+                <span class="tweet__time--ago">{{tweet.timestamp_ms | date:'medium'}}</span>
+            </div>
+            <div class="tweet__content" ng-bind-html="tweet.text | linky | unsafe"></div>
+
         </div>
     </div>
 </div>

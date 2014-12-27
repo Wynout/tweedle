@@ -11,7 +11,7 @@
     d3.custom.barChart = function module() {
 
         var canvas = {width: 1024, height: 250},
-            margin = {top: 20, right: 20, bottom: 60, left: 40},
+            margin = {top: 50, right: 20, bottom: 30, left: 40},
             chart  = {
                 width : canvas.width  - margin.left - margin.right,
                 height: canvas.height - margin.top  - margin.bottom
