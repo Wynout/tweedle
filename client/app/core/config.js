@@ -23,10 +23,14 @@
     core.value('config', config);
     core.config(configure);
 
-    configure.$inject = ['$logProvider', '$routeProvider', 'routehelperConfigProvider', 'exceptionConfigProvider'];
+    configure.$inject = ['$compileProvider', '$logProvider', '$routeProvider', 'routehelperConfigProvider', 'exceptionConfigProvider'];
 
     /* @ngInject */
-    function configure($logProvider, $routeProvider, routehelperConfigProvider, exceptionConfigProvider) {
+    function configure($compileProvider, $logProvider, $routeProvider, routehelperConfigProvider, exceptionConfigProvider) {
+
+        // turn debug info off/on (improve performance in production)
+        // http://blog.thoughtram.io/angularjs/2014/12/22/exploring-angular-1.3-disabling-debug-info.html
+        $compileProvider.debugInfoEnabled(true);
 
         // turn debugging off/on (no info or warn)
         if ($logProvider.debugEnabled) {
